@@ -1,6 +1,7 @@
 {
   "tasks": {
     "dev": "deno run --watch --allow-read --allow-env --allow-net main.ts",
+    "polling": "deno run --watch --allow-read --allow-env --allow-net pooling.ts",
     "prod": "deno run --allow-env --allow-read --allow-net main.ts"
   },
   "deploy": {
