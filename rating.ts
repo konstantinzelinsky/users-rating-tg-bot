@@ -21,17 +21,6 @@ export const handleUsersRatingByReactionEvent = async (
     return;
   }
 
-  if (
-    (hasRatingUpEmoji(emojiKept) &&
-      (hasRatingUpEmoji(emojiAdded) || hasRatingUpEmoji(emojiRemoved))) ||
-    (hasRatingDownEmoji(emojiKept) &&
-      (hasRatingDownEmoji(emojiAdded) || hasRatingDownEmoji(emojiRemoved))) ||
-    (hasRatingUpEmoji(emojiAdded) && hasRatingUpEmoji(emojiRemoved)) ||
-    (hasRatingDownEmoji(emojiAdded) && hasRatingDownEmoji(emojiRemoved))
-  ) {
-    return;
-  }
-
   const reactionAuthor = ctx.messageReaction.user;
 
   if (!reactionAuthor) {
@@ -71,6 +60,10 @@ export const handleUsersRatingByReactionEvent = async (
     !hasRatingDownEmoji(emojiKept)
   ) {
     decreaseRatingCount += 1;
+  }
+
+  if (!increaseRatingCount && !decreaseRatingCount) {
+    return;
   }
 
   if (ctx.session.previousBotMessageId) {
