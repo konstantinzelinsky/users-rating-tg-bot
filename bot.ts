@@ -28,10 +28,7 @@ export const bot = new Bot<BotContext>(apiKey);
 bot.use(
   session({
     initial: () => ({
-      usersRating: {
-        konstantinzelinsky: 2,
-        marinalvdgs: 3
-      }
+      usersRating: {}
     }),
     storage: isCloudStorage ? freeStorage(bot.token) : undefined
   })
