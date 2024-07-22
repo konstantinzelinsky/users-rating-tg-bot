@@ -8,6 +8,7 @@ import { freeStorage } from 'https://deno.land/x/grammy_storages@v2.4.2/free/src
 
 import { env } from './config.ts';
 import { handleUsersRatingByReactionEvent } from './rating.ts';
+import { ratingUpEmojiList, ratingDownEmojiList } from './emoji.ts';
 
 interface SessionData {
   usersRating: Record<string, number>;
@@ -44,6 +45,18 @@ bot.command('rating', (ctx) => {
       .sort(([, ratingA], [, ratingB]) => ratingB - ratingA)
       .map(([username, rating]) => `@${username}: ${rating}`)
       .join('\n')}`
+  );
+});
+
+bot.command('help', (ctx) => {
+  ctx.reply(
+    `Это бот, который реагирует на реакции к сообщениям и изменяет рейтинг его автора\n
+    Используй следующие реакции для изменения рейтинга:\n
+    ${ratingUpEmojiList.join(', ')} - повысить рейтинг\n
+    ${ratingDownEmojiList.join(', ')} - понизить рейтинг\n\n
+    Доступные команды:\n
+    rating - Посмотреть текущий рейтинг пользователей\n
+    help - Посмотреть информацию о боте`
   );
 });
 

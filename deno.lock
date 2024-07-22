@@ -1,7 +1,8 @@
 {
   "version": "3",
   "redirects": {
-    "https://deno.land/x/grammy_storages/free/src/mod.ts": "https://deno.land/x/grammy_storages@v2.4.2/free/src/mod.ts"
+    "https://deno.land/x/grammy_storages/free/src/mod.ts": "https://deno.land/x/grammy_storages@v2.4.2/free/src/mod.ts",
+    "https://lib.deno.dev/x/grammy@v1/mod.ts": "https://deno.land/x/grammy@v1.27.0/mod.ts"
   },
   "remote": {
     "https://cdn.skypack.dev/-/debug@v4.3.4-o4liVvMlOnQWbLSYZMXw/dist=es2019,mode=imports/optimized/debug.js": "671100993996e39b501301a87000607916d4d2d9f8fc8e9c5200ae5ba64a1389",
@@ -39,6 +40,10 @@
     "https://deno.land/x/grammy@v1.27.0/platform.deno.ts": "68272a7e1d9a2d74d8a45342526485dbc0531dee812f675d7f8a4e7fc8393028",
     "https://deno.land/x/grammy@v1.27.0/types.deno.ts": "b2aba74fb3aba667c0454d9963f9c6ea70acde6d9cc7e6ac0e306f6cad6e28f6",
     "https://deno.land/x/grammy@v1.27.0/types.ts": "729415590dfa188dbe924dea614dff4e976babdbabb28a307b869fc25777cdf0",
+    "https://deno.land/x/grammy_emoji@v1.2.0/deps.deno.ts": "e4feddd161c8f3fa0ee28bda59d73f040c56f8fe1f7bf1d9fc458294fbfa5d48",
+    "https://deno.land/x/grammy_emoji@v1.2.0/emojidata.ts": "496cea7795a54eac32e1ce3dbd2a781439c58ee6eeba3ec1423a230e82d4f4da",
+    "https://deno.land/x/grammy_emoji@v1.2.0/mod.ts": "2f8d15523d4b0e7eb136b5ee567567f8818a2996809d7c5802932cdedd335462",
+    "https://deno.land/x/grammy_emoji@v1.2.0/reactiondata.ts": "45ccda6179ee793d862af16f065dafee162bd581b6678f7a2b8e44c2a15530ec",
     "https://deno.land/x/grammy_storages@v2.4.2/free/src/adapter.ts": "0a85a6363b12dd0f6d79d1ca469eb7677082050c2e60592441f929f95621dc0d",
     "https://deno.land/x/grammy_storages@v2.4.2/free/src/mod.ts": "6485c5bf548fc73446f54f397660a59ffcaf0bcc465b6050c2c762848c2c0ba5",
     "https://deno.land/x/grammy_types@v3.11.0/api.ts": "ae04d6628e3d25ae805bc07a19475065044fc44cde0a40877405bc3544d03a5f",
