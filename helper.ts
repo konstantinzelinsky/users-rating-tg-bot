@@ -47,7 +47,8 @@ export const getAuthorOfMessageWithReaction = async (
     reply_parameters: {
       message_id: messageId,
       chat_id: chatId
-    }
+    },
+    disable_notification: true
   });
 
   if (deleteReply) {

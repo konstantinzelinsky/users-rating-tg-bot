@@ -73,12 +73,18 @@ export const handleUsersRatingByReactionEvent = async (
     decreaseRatingCount += 1;
   }
 
+  if (ctx.session.previousBotMessageId) {
+    await ctx.api.deleteMessage(ctx.chatId, ctx.session.previousBotMessageId);
+  }
+
   const { originalMessageAuthor: messageAuthor, replyMessageId } =
     await getAuthorOfMessageWithReaction(
       ctx.messageReaction.chat.id,
       ctx.messageReaction.message_id,
       { deleteReply: false }
     );
+
+  ctx.session.previousBotMessageId = replyMessageId;
 
   if (!messageAuthor || !messageAuthor.username) {
     console.log('Original message author not found');

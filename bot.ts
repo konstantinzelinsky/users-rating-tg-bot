@@ -12,6 +12,7 @@ import { ratingUpEmojiList, ratingDownEmojiList } from './emoji.ts';
 
 interface SessionData {
   usersRating: Record<string, number>;
+  previousBotMessageId: number | null;
 }
 
 export type BotContext = Context & SessionFlavor<SessionData>;
@@ -28,7 +29,8 @@ export const bot = new Bot<BotContext>(apiKey);
 bot.use(
   session({
     initial: () => ({
-      usersRating: {}
+      usersRating: {},
+      previousBotMessageId: null
     }),
     storage: isCloudStorage ? freeStorage(bot.token) : undefined
   })
