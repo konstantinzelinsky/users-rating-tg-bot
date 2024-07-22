@@ -133,7 +133,7 @@ export const handleUsersRatingByReactionEvent = async (
     const { newRating } = changeUserRating(
       ctx,
       messageAuthor.username,
-      decreaseRatingCount
+      -decreaseRatingCount
     );
     await ctx.api.editMessageText(
       ctx.chatId,
