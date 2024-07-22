@@ -41,28 +41,21 @@ export const getUserFullname = (
 export const getAuthorOfMessageWithReaction = async (
   chatId: number,
   messageId: number,
-  { deleteForwardedMessage }: { deleteForwardedMessage: boolean }
+  { deleteReply }: { deleteReply: boolean }
 ) => {
-  const forwardedMessage = await bot.api.forwardMessage(
-    chatId,
-    chatId,
-    messageId
-  );
+  const reply = await bot.api.sendMessage(chatId, 'UsersRating', {
+    reply_parameters: {
+      message_id: messageId,
+      chat_id: chatId
+    }
+  });
 
-  if (deleteForwardedMessage) {
-    await bot.api.deleteMessage(
-      forwardedMessage.chat.id,
-      forwardedMessage.message_id
-    );
+  if (deleteReply) {
+    await bot.api.deleteMessage(reply.chat.id, reply.message_id);
   }
 
-  // deno-lint-ignore ban-ts-comment
-  // @ts-ignore
-  return forwardedMessage.forward_from as {
-    id: number;
-    is_bot: boolean;
-    first_name: string;
-    last_name: string;
-    username: string;
+  return {
+    originalMessageAuthor: reply.reply_to_message?.from,
+    replyMessageId: reply.message_id
   };
 };

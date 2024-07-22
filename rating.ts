@@ -38,11 +38,53 @@ export const handleUsersRatingByReactionEvent = async (
     return;
   }
 
-  const messageAuthor = await getAuthorOfMessageWithReaction(
-    ctx.messageReaction.chat.id,
-    ctx.messageReaction.message_id,
-    { deleteForwardedMessage: false }
-  );
+  let increaseRatingCount = 0;
+  let decreaseRatingCount = 0;
+
+  if (
+    hasRatingUpEmoji(emojiAdded) &&
+    !hasRatingUpEmoji(emojiRemoved) &&
+    !hasRatingUpEmoji(emojiKept)
+  ) {
+    increaseRatingCount += 1;
+  }
+
+  if (
+    hasRatingDownEmoji(emojiRemoved) &&
+    !hasRatingDownEmoji(emojiAdded) &&
+    !hasRatingDownEmoji(emojiKept)
+  ) {
+    increaseRatingCount += 1;
+  }
+
+  if (
+    hasRatingUpEmoji(emojiRemoved) &&
+    !hasRatingUpEmoji(emojiAdded) &&
+    !hasRatingUpEmoji(emojiKept)
+  ) {
+    decreaseRatingCount += 1;
+  }
+
+  if (
+    hasRatingDownEmoji(emojiAdded) &&
+    !hasRatingDownEmoji(emojiRemoved) &&
+    !hasRatingDownEmoji(emojiKept)
+  ) {
+    decreaseRatingCount += 1;
+  }
+
+  const { originalMessageAuthor: messageAuthor, replyMessageId } =
+    await getAuthorOfMessageWithReaction(
+      ctx.messageReaction.chat.id,
+      ctx.messageReaction.message_id,
+      { deleteReply: false }
+    );
+
+  if (!messageAuthor || !messageAuthor.username) {
+    console.log('Original message author not found');
+
+    return;
+  }
 
   const reactionAuthorName = getUserFullname(
     reactionAuthor.first_name,
@@ -55,7 +97,9 @@ export const handleUsersRatingByReactionEvent = async (
 
   if (messageAuthor.id === reactionAuthor.id) {
     const { newRating } = changeUserRating(ctx, messageAuthor.username, -1);
-    ctx.reply(
+    await ctx.api.editMessageText(
+      ctx.chatId,
+      replyMessageId,
       `Ха-ха, ${reactionAuthorName} поставил(а) реакцию себе, рейтинг уменьшен. Новый рейтинг ${newRating}`
     );
 
@@ -63,52 +107,38 @@ export const handleUsersRatingByReactionEvent = async (
   }
 
   if (messageAuthor.is_bot) {
-    ctx.reply(`${reactionAuthorName} поставил(а) реакцию на сообщение бота`);
+    await ctx.api.editMessageText(
+      ctx.chatId,
+      replyMessageId,
+      `${reactionAuthorName} поставил(а) реакцию на сообщение бота`
+    );
 
     return;
   }
 
-  if (
-    hasRatingUpEmoji(emojiAdded) &&
-    !hasRatingUpEmoji(emojiRemoved) &&
-    !hasRatingUpEmoji(emojiKept)
-  ) {
-    const { newRating } = changeUserRating(ctx, messageAuthor.username, 1);
-    ctx.reply(
+  if (increaseRatingCount) {
+    const { newRating } = changeUserRating(
+      ctx,
+      messageAuthor.username,
+      increaseRatingCount
+    );
+    await ctx.api.editMessageText(
+      ctx.chatId,
+      replyMessageId,
       `${reactionAuthorName} увеличил(а) рейтинг ${messageAuthorName}. Новый рейтинг ${newRating}`
     );
   }
 
-  if (
-    hasRatingUpEmoji(emojiRemoved) &&
-    !hasRatingUpEmoji(emojiAdded) &&
-    !hasRatingUpEmoji(emojiKept)
-  ) {
-    const { newRating } = changeUserRating(ctx, messageAuthor.username, -1);
-    ctx.reply(
-      `${reactionAuthorName} уменьшил(а) рейтинг ${messageAuthorName}. Новый рейтинг ${newRating}`
+  if (decreaseRatingCount) {
+    const { newRating } = changeUserRating(
+      ctx,
+      messageAuthor.username,
+      decreaseRatingCount
     );
-  }
-
-  if (
-    hasRatingDownEmoji(emojiAdded) &&
-    !hasRatingDownEmoji(emojiRemoved) &&
-    !hasRatingDownEmoji(emojiKept)
-  ) {
-    const { newRating } = changeUserRating(ctx, messageAuthor.username, -1);
-    ctx.reply(
+    await ctx.api.editMessageText(
+      ctx.chatId,
+      replyMessageId,
       `${reactionAuthorName} уменьшил(а) рейтинг ${messageAuthorName}. Новый рейтинг ${newRating}`
-    );
-  }
-
-  if (
-    hasRatingDownEmoji(emojiRemoved) &&
-    !hasRatingDownEmoji(emojiAdded) &&
-    !hasRatingDownEmoji(emojiKept)
-  ) {
-    const { newRating } = changeUserRating(ctx, messageAuthor.username, 1);
-    ctx.reply(
-      `${reactionAuthorName} увеличил(а) рейтинг ${messageAuthorName}. Новый рейтинг ${newRating}`
     );
   }
 };
