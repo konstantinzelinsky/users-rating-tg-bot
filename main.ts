@@ -12,9 +12,11 @@ if (env.USE_POLLING === '1') {
 
   Deno.serve(async (req) => {
     if (req.method === 'POST') {
+      console.log('New POST request');
       const url = new URL(req.url);
 
       if (url.pathname.slice(1) === bot.token) {
+        console.log('New POST request - corrent pathname');
         try {
           return await handleUpdate(req);
         } catch (err) {
