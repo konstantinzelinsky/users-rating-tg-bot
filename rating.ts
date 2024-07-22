@@ -74,7 +74,11 @@ export const handleUsersRatingByReactionEvent = async (
   }
 
   if (ctx.session.previousBotMessageId) {
-    await ctx.api.deleteMessage(ctx.chatId, ctx.session.previousBotMessageId);
+    try {
+      await ctx.api.deleteMessage(ctx.chatId, ctx.session.previousBotMessageId);
+    } catch (error) {
+      console.error("Can't delete previos bot message", error);
+    }
   }
 
   const { originalMessageAuthor: messageAuthor, replyMessageId } =
